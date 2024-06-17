@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 T = TypeVar('T')
 
+
 class BaseRepo:
 
     @staticmethod
@@ -39,5 +40,6 @@ class BaseRepo:
         db.bulk_save_objects(models)
         db.commit()
 
-class ViniData(BaseRepo):
+
+class ViniDataRepository(BaseRepo):
     pass
