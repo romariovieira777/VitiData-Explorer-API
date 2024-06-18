@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.get("/production/all", dependencies=[Depends(JWTBearer())])
-async def get_productions_all(request: Request):
+async def get_production_all(request: Request):
     try:
         return ResponseSchema(
             code="200",
