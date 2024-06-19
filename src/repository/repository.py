@@ -4,6 +4,7 @@ from typing import TypeVar, Generic, List, Optional
 import jwt
 from fastapi import HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 
@@ -101,7 +102,14 @@ class JWTBearer(HTTPBearer):
 
 class UserRepository(BaseRepo):
 
-    def retrieve_by_first_username(db: Session, model: Generic[T], username: str):
+    @classmethod
+    def verify_password(cls, password, hashed_password):
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+        return pwd_context.verify(password, hashed_password)
+
+    @classmethod
+    def retrieve_by_first_username(cls, db: Session, model: Generic[T], username: str):
         return db.query(model).filter(model.username == username).first()
 
 class ViniDataRepository(BaseRepo):

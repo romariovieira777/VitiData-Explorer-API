@@ -9,8 +9,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from src.config.config import ACCESS_TOKEN_EXPIRE_MINUTES, USERNAME_TMP, PASSWORD_TMP, HOST_VITI_BRASIL, \
-    PATH_DATABASE_VITIDATA, ENGINE_VITIDATA
-from src.repository.repository import JWTRepo
+    PATH_DATABASE_VITIDATA, ENGINE_VITIDATA, get_db_vitidata
+from src.model.model import User
+from src.repository.repository import JWTRepo, UserRepository
 from src.schema.schema import LoginSchema
 
 
@@ -18,14 +19,23 @@ class AuthService:
 
     @classmethod
     def get_token(cls, request: LoginSchema):
-        # Padrão validar usuário na base de dados.
 
-        if request.username == USERNAME_TMP and request.password == PASSWORD_TMP:
-            token = JWTRepo.generate_token({
-                "username": request.username
-            }, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+        session = next(get_db_vitidata())
 
-            return token
+        user = UserRepository.retrieve_by_first_username(session, User, request.username)
+
+        if user is not None:
+
+            if UserRepository.verify_password(request.password, user.hashed_password):
+
+                if request.username == USERNAME_TMP and request.password == PASSWORD_TMP:
+                    token = JWTRepo.generate_token({
+                        "username": request.username
+                    }, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+
+                    return token
+            else:
+                raise Exception("Incorrect username or password")
 
 
 class VitiEmbrapaService:

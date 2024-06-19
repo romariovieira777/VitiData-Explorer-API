@@ -1,6 +1,4 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-
+from fastapi import APIRouter
 from src.schema.schema import LoginSchema, ResponseSchema, TokenResponse
 from src.service.service import AuthService
 
