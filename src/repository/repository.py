@@ -99,5 +99,12 @@ class JWTBearer(HTTPBearer):
         return isTokenValid
 
 
+class UserRepository(BaseRepo):
+
+    def retrieve_by_first_username(db: Session, model: Generic[T], username: str):
+        return db.query(model).filter(model.username == username).first()
+
 class ViniDataRepository(BaseRepo):
     pass
+
+

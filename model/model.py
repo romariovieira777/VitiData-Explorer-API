@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 
 from src.config.config import Base
 
+
 class User(Base):
     __tablename__ = 'user'
 
