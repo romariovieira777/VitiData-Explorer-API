@@ -1,7 +1,7 @@
 from typing import Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from model.model import User
+from src.model import User
 from src.config.config import ORIGIN_CORS, ENGINE_VITIDATA, Base, USERNAME_API, PASSWORD_API, get_db_vitidata
 from src.repository.repository import UserRepository
 from src.router.router import router
