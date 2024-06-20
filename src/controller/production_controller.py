@@ -7,7 +7,7 @@ from src.service.service import ProductionService
 router = APIRouter()
 
 
-@router.post("/update/table/production", dependencies=[Depends(JWTBearer())])
+@router.get("/update/table/production", dependencies=[Depends(JWTBearer())])
 async def update_table_production(request: Request):
     try:
         production_service = ProductionService()
