@@ -19,7 +19,7 @@ async def login(request: LoginSchema):
         else:
             return ResponseSchema(code="500",
                                   status="Internal Server Error",
-                                  message="User not authenticate").dict(exclude_none=True)
+                                  message="Incorrect username or password").dict(exclude_none=True)
 
     except Exception as e:
         return ResponseSchema(code="500",
